@@ -70,7 +70,7 @@ def weather():
 
 
 def latestNews(news=5):
-	URL = 'https://vnexpress.net/thoi-su'
+	URL = 'https://vnexpress.net/tin-tuc-24h/'
 	result = requests.get(URL)
 	src = result.content
 
@@ -171,3 +171,16 @@ def downloadImage(query, n=4):
 			print('Downloaded', count)
 		except Exception as e:
 			raise e
+
+def jokes():
+	URL = 'https://icanhazdadjoke.com/'
+	result = requests.get(URL)
+	src = result.content
+
+	soup = BeautifulSoup(src, 'html.parser')
+
+	try:
+		p = soup.find('p')
+		return p.text
+	except Exception as e:
+		raise e

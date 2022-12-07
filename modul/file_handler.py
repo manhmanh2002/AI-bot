@@ -1,5 +1,4 @@
 import subprocess
-import wmi
 import os
 import sys
 import webbrowser
@@ -15,19 +14,19 @@ def isContain(text, list):
 	return False
 
 def createFile(text):
-	appLocation = "C:\\Users\\Roshan\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"#"C:\\Program Files\\Sublime Text 3\\sublime_text.exe"
+	appLocation = "D:\\1. APP\\Sublime Text\\sublime_text.exe"
 	
 	if isContain(text, ["ppt","power point","powerpoint"]):
 		file_name = "sample_file.ppt"
-		appLocation = "C:\\Program Files (x86)\\Microsoft Office\\Office15\\POWERPNT.exe"
+		appLocation = "C:\\Program Files\\Microsoft Office\\root\\Office16\\POWERPNT.exe"
 
 	elif isContain(text, ['excel','spreadsheet']):
 		file_name = "sample_file.xsl"
-		appLocation = "C:\\Program Files (x86)\\Microsoft Office\\Office15\\EXCEL.EXE"
+		appLocation = "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE"
 
 	elif isContain(text, ['word','document']):
 		file_name = "sample_file.docx"
-		appLocation = "C:\\Program Files (x86)\\Microsoft Office\\Office15\\WINWORD.EXE"
+		appLocation = "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"
 
 	elif isContain(text, ["text","simple","normal"]): file_name = "sample_file.txt"
 	elif "python" in text: file_name = "sample_file.py"
@@ -73,8 +72,7 @@ def CreateHTMLProject(project_name='Sample'):
 	jsFile.write(jsContent)
 	jsFile.close()
 
-	appLocation = "C:\\Program Files\\Sublime Text 3\\sublime_text.exe"
-	# subprocess.Popen([appLocation, path + project_name])
+	appLocation = "D:\\1. APP\\Sublime Text\\sublime_text.exe"
 	subprocess.Popen([appLocation, path + project_name + "/index.html"])
 	subprocess.Popen([appLocation, path + project_name + "/style.css"])
 	subprocess.Popen([appLocation, path + project_name + "/script.js"])

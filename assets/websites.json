@@ -11,9 +11,6 @@
 	"youtube": [
 		"https://www.youtube.com/"
 	],
-	"codeforces": [
-		"https://codeforces.com/enter?back=%2Fproblemset"
-	],
 	"codechef":[
 		"https://www.codechef.com/"
 	],
@@ -25,12 +22,6 @@
 	],
 	"udemy":[
 		"https://www.udemy.com/"
-	],
-	"edx":[
-		"https://www.edx.org/"
-	],
-	"coursera":[
-		"https://www.coursera.org/"
 	],
 	"w3resource":[
 		"https://www.w3resource.com/"

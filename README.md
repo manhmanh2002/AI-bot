@@ -1,10 +1,9 @@
 ## Features / Tasks it can perform:  
-Game (eg, Rock Paper Scissor with GUI)  
+Game
 Search anything from wikipedia, google maps, etc  
 Play video from YouTube  
-COVID Tracker  
 Weather 
-Jokes  
+Joke
 News
 Capture Photo  
 Math Calculations  
@@ -25,23 +24,22 @@ Volume Control
 
 ## Modules Requirements and Installation:  
 ```sh
-pip install SpeechRecognition  
-pip install pyttsx3  
-pip install playsound  
-pip install Pillow  
-pip install pyscreenshot  
-pip install pynput  
-pip install psutil  
-pip install opencv-contrib-python  
-pip install opencv  
-pip install wikipedia  
-pip install bs4  
-pip install youtube-search-python  
-pip install wmi  
-pip install geopy  
-pip install googletrans==3.1.0a0  
+pip install SpeechRecognition                         #Speech Recognition       
+pip install pyttsx3                                   #
+pip install playsound                                 #python voice
+pip install Pillow                                    #Image
+pip install pyscreenshot                              #Screenshot
+pip install pynput                                    #keybroad
+pip install psutil                                    #os infor
+pip install opencv-contrib-python                     #image          
+pip install opencv                          
+pip install wikipedia                         
+pip install bs4                         
+pip install youtube-search-python                         
+pip install geopy                         
+pip install googletrans==3.1.0a0                          
 
-### To get started run main.py  
+## Math et started run main.py  
 ```sh
 python main.py
 ```
@@ -67,7 +65,7 @@ python main.py
 - Give me directions -> Starting Location -> Destination Location  
 
 ## Translator  
-- Translate a sentence -> "Hello, how are you?" -> Hindi  
+- Translate a sentence -> "Hello, how are you?" -> Vietnamese
 
 ## Smart Dictionary  
 - What is the definition of Machine Learning?  
@@ -102,11 +100,11 @@ python main.py
 
 ## Image Result  
 - Show the images of Robot  
-- Show the images of Samosa  
+- Show the images of food
 
 ## Wikipedia Result  
-- Who is Sundar Pichai?  
-- Who is Satya Nadella?  
+- Who is Bill Gate?  
+- Who is Obama?  
 - Artifical Intelligence on Wikipedia  
 
 ## Google Search  
@@ -114,7 +112,7 @@ python main.py
 - Search for data structures and algorithms  
 
 ## Google Maps  
-- India on Google Maps  
+- VietNam on Google Maps  
 - Washington DC on Google Maps  
 
 ## Joke Teller  
@@ -184,3 +182,17 @@ python main.py
 - You're so funny  
 - Thank You  
 - I'm sorry 
+
+## File information
+- app_control.py              #control everything about the system
+- app_timer.py                #countdown 
+- avatar_selection.py         #change avatar user
+- dictionary.py               #denfination about something
+- file_hander.py              #control everything about the file.ex: create file html,java.python,...
+- game.py                     #play online game or dice or coin
+- math_funtion.py             #solution math
+- normal chat.py              #communicate with Jarvis
+- photo.py                    #click a Photo
+- todo_handler                #todo user list
+- web_scrapping               #control everything about the web\
+- user_handler                #user data

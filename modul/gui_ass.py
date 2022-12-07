@@ -1,10 +1,12 @@
 #GOBAL VALIABLES USED#
-
 ai_name = 'J.A.R.V.I.S'.lower()
 EXIT_COMMANDS = ['bye', 'exit', 'quit', 'shut down', 'shutdown']
+ownerName = "Nguyen Duc Chinh"
+ownerDesignation = "Sir"
+ownerPhoto = "1"
+
 avatarChoosen = 0
 choosedAvtrImage = None
-
 botChatTextBg = "#007cc7"
 botChatText = "white"
 userChatTextBg = "#4da8da"
@@ -25,15 +27,12 @@ try:
     import math_function
     import app_control
     import web_scrapping
-    import game
     import app_timer
+    import game
     import dictionary
     import todo_handler
     import file_handler
     from photo import clickPhoto, viewPhoto
-    from user_handler import UserData
-    from dotenv import load_dotenv
-    load_dotenv()
     from user_handler import UserData
 except Exception as e:
     raise e
@@ -44,28 +43,18 @@ try:
     import speech_recognition
     import pyttsx3
     import pickle
+    from time import sleep
+    from gtts import gTTS
+    from time import sleep
     from tkinter import *
     from tkinter import ttk
     from tkinter import messagebox
     from tkinter import colorchooser
     from PIL import Image, ImageTk
-    from time import sleep
     from threading import Thread
 
 except Exception as e:
     print(e)
-
-try:
-    user = UserData()
-    user.extractData()
-    ownerName = user.getName()
-    ownerDesignation = "Sir"
-    if user.getGender() == "Female":
-        ownerDesignation = "Ma'am"
-    ownerPhoto = user.getUserPhoto()
-except Exception as e:
-    raise SystemExit
-
 
 def ChangeSettings(write=False):
     import pickle
@@ -227,7 +216,7 @@ def record(clearChat=True, iconDisplay=True):
             attachTOframe(said)
         except Exception as e:
             print(e)
-            # speak("I didn't get it, Say that again please...")
+            speak("I didn't get it, Say that again please...")
             if "connection failed" in str(e):
                 speak("Your System is Offline...", True, True)
             return 'None'
@@ -239,12 +228,6 @@ def voiceMedium():
         query = record()
         if query == 'None':
             continue
-        if 'sleep' in query:
-            speak("Ok I will sleep until you input 'wake up' or 'turn on' on your keyboard")
-            return True
-        if isContain(query, ['turn on', 'wake up']):
-            speak("I'm back. Can I help you?")
-            return False
         if isContain(query, EXIT_COMMANDS):
             speak("Shutting down the System. Good Bye " +
                   ownerDesignation+"!", True, True)
@@ -270,8 +253,6 @@ def keyboardInput(e):
         UserField.delete(0, END)
 
 ###### TASK/COMMAND HANDLER #####
-
-
 def isContain(txt, lst):
     for word in lst:
         if word in txt:
@@ -403,7 +384,7 @@ def main(text):
         return
     if isContain(text, ['news']):
         speak('Getting the latest news...', True, True)
-        headlines, headlineLinks = web_scrapping.latestNews(2)
+        headlines, headlineLinks = web_scrapping.latestNews(5   )
         for head in headlines:
             speak(head, True)
         speak('Do you want to read the full news?', True)
@@ -447,42 +428,23 @@ def main(text):
         return
 
     if isContain(text, ['game']):
-        speak("Which game do you want to play?", True, True)
-        attachTOframe(game.showGames(), True)
-        while True:
-            text = record(False)
-            if text == "None":
-                speak("Didn't understand what you say?", True, True)
-                return False
-            if 'online' in text:
-                speak("Ok "+ownerDesignation +
-                      ", Let's play some online games", True, True)
-                web_scrapping.openWebsite(
-                    'https://www.agame.com/games/mini-games/')
-                return
-            if isContain(text, ["don't", "no", "cancel", "back", "never"]):
-                speak("No Problem "+ownerDesignation +
-                      ", We'll play next time.", True, True)
-                break
-            else:
-                speak("Ok "+ownerDesignation+", Let's Play " + text, True, True)
-                os.system(
-                    f"python -c \"from modules import game; game.play('{text}')\"")
-                return False
-    if isContain(text, ['coin', 'dice', 'die']):
+        speak("Ok "+ownerDesignation +
+                ", Let's play some online games", True, True)
+        web_scrapping.openWebsite(
+            'https://www.agame.com/games/mini-games/')
+        return
+
+    if isContain(text, ['coin','dice','die']):
         if "toss" in text or "roll" in text or "flip" in text:
             speak("Ok "+ownerDesignation, True, True)
             result = game.play(text)
-            if "Head" in result:
-                showSingleImage('head')
-            elif "Tail" in result:
-                showSingleImage('tail')
-            else:
-                showSingleImage(result[-1])
+            if "Head" in result: showSingleImage('head')
+            elif "Tail" in result: showSingleImage('tail')
+            else: showSingleImage(result[-1])
             speak(result)
             return
-
-    if isContain(text, ['time', 'date']):
+	
+    if isContain(text, ['time','date']):
         speak(normal_chat.chat(text), True, True)
         return
     if 'my name' in text:
@@ -491,64 +453,43 @@ def main(text):
     if isContain(text, ['voice']):
         global voice_id
         try:
-            if 'female' in text:
-                voice_id = 0
-            elif 'male' in text:
-                voice_id = 1
+            if 'female' in text: voice_id = 0
+            elif 'male' in text: voice_id = 1
             else:
-                if voice_id == 0:
-                    voice_id = 1
-                else:
-                    voice_id = 0
+                if voice_id==0: voice_id=1
+                else: voice_id=0
             engine.setProperty('voice', voices[voice_id].id)
             ChangeSettings(True)
-            speak("Hello "+ownerDesignation +
-                  ", I have changed my voice. How may I help you?", True, True)
+            speak("Hello "+ownerDesignation+", I have changed my voice. How may I help you?", True, True)
             assVoiceOption.current(voice_id)
         except Exception as e:
             print(e)
         return
-    if isContain(text, ['morning', 'evening', 'noon']) and 'good' in text:
+    if isContain(text, ['morning','evening','noon']) and 'good' in text:
         speak(normal_chat.chat("good"), True, True)
         return
-
+	
     result = normal_chat.reply(text)
-    if result != "None":
-        speak(result, True, True)
+    if result != "None": speak(result, True, True)
     else:
-        speak(
-            "I don't know anything about this. Do you want to search it on web?", True, True)
-        response = record(False, True)
-        if isContain(response, ["no", "don't"]):
-            speak("Ok "+ownerDesignation, True)
-        else:
-            speak("Here's what I found on the web... ", True, True)
-            web_scrapping.googleSearch(text)
-
+        speak("I couldn't understand your query... ", True, True)
 
 def deleteUserData():
-    result = messagebox.askquestion(
-        'JARVIS', 'Are you sure you want to delete your Data ?')
-    if result == 'no':
-        return
-    messagebox.showinfo(
-        'Clear Data', 'Your account has been cleared\nRegister your account again to use.')
-    import shutil
-    shutil.rmtree('userData')
-    root.destroy()
+	result = messagebox.askquestion('J.A.R.V.I.S', 'Are you sure you want to exit ?')
+	if result=='no': return
+	root.destroy()
 #### GUI ####
 
 ############ ATTACHING BOT/USER CHAT ON CHAT SCREEN ###########
 
-
 def attachTOframe(text, bot=False):
     if bot:
         botchat = Label(chat_frame, text=text, bg=botChatTextBg, fg=botChatText,
-                        justify=LEFT, wraplength=250, font=('Montserrat', 12, 'bold'))
+                        justify=LEFT, wraplength=300, font=('Montserrat', 12, 'bold'))
         botchat.pack(anchor='w', ipadx=5, ipady=5, pady=5)
     else:
         userchat = Label(chat_frame, text=text, bg=userChatTextBg, fg='white',
-                         justify=RIGHT, wraplength=250, font=('Montserrat', 12, 'bold'))
+                         justify=RIGHT, wraplength=300, font=('Montserrat', 12, 'bold'))
         userchat.pack(anchor='e', ipadx=2, ipady=2, pady=5)
 
 
@@ -558,67 +499,53 @@ def clearChatScreen():
 
 
 img0, img1, img2, img3, img4 = None, None, None, None, None
-
-
 def showSingleImage(type, data=None):
-    global img0, img1, img2, img3, img4
-    try:
-        img0 = ImageTk.PhotoImage(Image.open(
-            'Downloads/0.jpg').resize((90, 110), Image.ANTIALIAS))
-    except:
-        pass
-    img1 = ImageTk.PhotoImage(Image.open(
-        'assets/images/heads.jpg').resize((220, 200), Image.ANTIALIAS))
-    img2 = ImageTk.PhotoImage(Image.open(
-        'assets/images/tails.jpg').resize((220, 200), Image.ANTIALIAS))
-    img4 = ImageTk.PhotoImage(Image.open('assets/images/WeatherImage.png'))
+	global img0, img1, img2, img3, img4
+	try:
+		img0 = ImageTk.PhotoImage(Image.open('Downloads/0.jpg').resize((90,110), Image.ANTIALIAS))
+	except:
+		pass
+	img1 = ImageTk.PhotoImage(Image.open('assets/images/heads.jpg').resize((220,200), Image.ANTIALIAS))
+	img2 = ImageTk.PhotoImage(Image.open('assets/images/tails.jpg').resize((220,200), Image.ANTIALIAS))
+	img4 = ImageTk.PhotoImage(Image.open('assets/images/WeatherImage.png'))
 
-    if type == "weather":
-        weather = Frame(chat_frame)
-        weather.pack(anchor='w')
-        Label(weather, image=img4, bg=chatBgColor).pack()
-        Label(weather, text=data[0], font=(
-            'Arial Bold', 45), fg='white', bg='#3F48CC').place(x=65, y=45)
-        Label(weather, text=data[1], font=('Montserrat', 15),
-              fg='white', bg='#3F48CC').place(x=78, y=110)
-        Label(weather, text=data[2], font=('Montserrat', 10),
-              fg='white', bg='#3F48CC').place(x=78, y=140)
-        Label(weather, text=data[3], font=('Arial Bold', 12),
-              fg='white', bg='#3F48CC').place(x=60, y=160)
+	if type=="weather":
+		weather = Frame(chat_frame)
+		weather.pack(anchor='w')
+		Label(weather, image=img4, bg=chatBgColor).pack()
+		Label(weather, text=data[0], font=('Arial Bold', 45), fg='white', bg='#3F48CC').place(x=65,y=45)
+		Label(weather, text=data[1], font=('Montserrat', 15), fg='white', bg='#3F48CC').place(x=78,y=110)
+		Label(weather, text=data[2], font=('Montserrat', 10), fg='white', bg='#3F48CC').place(x=78,y=140)
+		Label(weather, text=data[3], font=('Arial Bold', 12), fg='white', bg='#3F48CC').place(x=60,y=160)
 
-    elif type == "wiki":
-        Label(chat_frame, image=img0, bg='#EAEAEA').pack(anchor='w')
-    elif type == "head":
-        Label(chat_frame, image=img1, bg='#EAEAEA').pack(anchor='w')
-    elif type == "tail":
-        Label(chat_frame, image=img2, bg='#EAEAEA').pack(anchor='w')
-    else:
-        img3 = ImageTk.PhotoImage(Image.open(
-            'assets/images/dice/'+type+'.jpg').resize((200, 200), Image.ANTIALIAS))
-        Label(chat_frame, image=img3, bg='#EAEAEA').pack(anchor='w')
-
-
+	elif type=="wiki":
+		Label(chat_frame, image=img0, bg='#EAEAEA').pack(anchor='w')
+	elif type=="head":
+		Label(chat_frame, image=img1, bg='#EAEAEA').pack(anchor='w')
+	elif type=="tail":
+		Label(chat_frame, image=img2, bg='#EAEAEA').pack(anchor='w')
+	else:
+		img3 = ImageTk.PhotoImage(Image.open('assets/images/dice/'+type+'.jpg').resize((200,200), Image.ANTIALIAS))
+		Label(chat_frame, image=img3, bg='#EAEAEA').pack(anchor='w')
+	
 def showImages(query):
-    global img0, img1, img2, img3
-    web_scrapping.downloadImage(query)
-    w, h = 150, 110
-    # Showing Images
-    imageContainer = Frame(chat_frame, bg='#EAEAEA')
-    imageContainer.pack(anchor='w')
-    # loading images
-    img0 = ImageTk.PhotoImage(Image.open(
-        'Downloads/0.jpg').resize((w, h), Image.ANTIALIAS))
-    img1 = ImageTk.PhotoImage(Image.open(
-        'Downloads/1.jpg').resize((w, h), Image.ANTIALIAS))
-    img2 = ImageTk.PhotoImage(Image.open(
-        'Downloads/2.jpg').resize((w, h), Image.ANTIALIAS))
-    img3 = ImageTk.PhotoImage(Image.open(
-        'Downloads/3.jpg').resize((w, h), Image.ANTIALIAS))
-    # Displaying
-    Label(imageContainer, image=img0, bg='#EAEAEA').grid(row=0, column=0)
-    Label(imageContainer, image=img1, bg='#EAEAEA').grid(row=0, column=1)
-    Label(imageContainer, image=img2, bg='#EAEAEA').grid(row=1, column=0)
-    Label(imageContainer, image=img3, bg='#EAEAEA').grid(row=1, column=1)
+	global img0, img1, img2, img3
+	web_scrapping.downloadImage(query)
+	w, h = 150, 110
+	#Showing Images
+	imageContainer = Frame(chat_frame, bg='#EAEAEA')
+	imageContainer.pack(anchor='w')
+	#loading images
+	img0 = ImageTk.PhotoImage(Image.open('Downloads/0.jpg').resize((w,h), Image.ANTIALIAS))
+	img1 = ImageTk.PhotoImage(Image.open('Downloads/1.jpg').resize((w,h), Image.ANTIALIAS))
+	img2 = ImageTk.PhotoImage(Image.open('Downloads/2.jpg').resize((w,h), Image.ANTIALIAS))
+	img3 = ImageTk.PhotoImage(Image.open('Downloads/3.jpg').resize((w,h), Image.ANTIALIAS))
+	#Displaying
+	Label(imageContainer, image=img0, bg='#EAEAEA').grid(row=0, column=0)
+	Label(imageContainer, image=img1, bg='#EAEAEA').grid(row=0, column=1)
+	Label(imageContainer, image=img2, bg='#EAEAEA').grid(row=1, column=0)
+	Label(imageContainer, image=img3, bg='#EAEAEA').grid(row=1, column=1)
+
 
 ### SWITCHING BETWEEN FRAMES ###
 
@@ -661,10 +588,8 @@ def changeChatMode():
 
 #### GUI ###
 
-
 def onhover(e):
     userPhoto['image'] = chngPh
-
 
 def onleave(e):
     userPhoto['image'] = userProfileImg
@@ -736,7 +661,7 @@ if __name__ == '__main__':
     splash_root.mainloop()
     # window
     root = Tk()
-    root.title('F.R.I.D.A.Y')
+    root.title('J.A.R.V.I.S')
     w_width, w_height = 400, 650
     s_width, s_height = root.winfo_screenwidth(), root.winfo_screenheight()
     x, y = (s_width/2)-(w_width/2), (s_height/2)-(w_height/2)
