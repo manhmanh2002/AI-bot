@@ -170,8 +170,7 @@ python main.py
 - Open CodeChef  
 
 ## Game  
-- Let's play a game  
-  - Rock Paper Scissor  
+- Let's play a game   
   - Online Games  
   
 ## Smart Reply  
